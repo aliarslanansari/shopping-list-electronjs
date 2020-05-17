@@ -2,8 +2,70 @@
 <html lang="en">
 <head>
     <title>Shopping List</title>
+    <link rel="stylesheet" href="./css/materialize.min.css">
+    <style>
+        body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+    </style>
 </head>
 <body>
-    <h1>Shopping List</h1>
+    <nav>
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo center">Shopping List</a>
+      </div>
+    </nav>
+    <ul></ul>
 </body>
+<script type="module">
+    const electron = require('electron');
+    const {ipcRenderer} = electron;
+    const ul = document.querySelector('ul');
+    //Add Item
+    ipcRenderer.on('item:add', function(e,item)
+    {
+        ul.className = 'collection';
+        const li = document.createElement('li');
+        li.className = 'collection-item'
+        const itemText = document.createTextNode(item);
+        li.appendChild(itemText);
+        ul.appendChild(li);
+    })
+    //Clear Item
+    ipcRenderer.on('item:clear',function(){
+        ul.innerHTML="";
+        ul.className = '';
+        li.className = '';
+
+    })
+    //Remove Item
+    ul.addEventListener('dblclick',removeItem);
+    function removeItem(e){
+        e.target.remove();
+    }
+
+</script>
+<script src="./js/materialize.min.js"></script>
+
+<script>
+    // 1. Require the installed module
+    const customTitlebar = require('custom-electron-titlebar');
+
+    // 2. Create the custom titlebar with your own settings
+    //    To make it work, we just need to provide the backgroundColor property
+    //    Other properties are optional.
+    let MyTitleBar = new customTitlebar.Titlebar({
+        backgroundColor: customTitlebar.Color.fromHex('#e67a8a'),
+        shadow: true,
+        icon: './assets/icons/png/icon.png'
+    });
+    
+    // 3. Update Titlebar text
+    MyTitleBar.updateTitle('Shopping List');
+</script>
 </html>
